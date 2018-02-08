@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: "2010-09-09"  
+Resources:  
+  WebInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.nano
+      ImageId: ami-80861296
+      Tags:                    
+       - Key: Name            
+         Value: Test EC2Instance
+         ##########need to add VPC/subnet and Volume######################

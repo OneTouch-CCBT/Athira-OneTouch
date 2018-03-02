@@ -153,8 +153,10 @@ Resources:
   WebInstance:
     Type: 'AWS::EC2::Instance'
     Properties:
-      InstanceType: t2.nano
+      
       ImageId: ami-80861296
+      SubnetId: !Ref SubnetA
+      InstanceType: t2.nano
       Tags:
         - Key: Name
           Value: Test EC2Instance

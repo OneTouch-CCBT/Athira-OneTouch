@@ -1,42 +1,51 @@
 
 AWSTemplateFormatVersion: 2010-09-09
-Resources:
+
   #==============================================================================================================
   #IAM for Clodformation_FullAccess and EC2_FullAccess
-  RootRole: 
-    Type: "AWS::IAM::Role"
-    Properties: 
-      AssumeRolePolicyDocument: 
-        Version: "2012-10-17"
-        Statement: 
-          - 
-            Effect: "Allow"
-            Principal: 
-              Service: 
-                - "ec2.amazonaws.com"
-            Action: 
-              - "sts:AssumeRole"
-      Path: "/"
-      Policies: 
-        -
-          PolicyName: "EC2inVPC-IAM"
-          PolicyDocument: 
-            Version: "2012-10-17"
-            Statement: 
-              - 
-                Effect: "Allow"
-                Action: "*"
-                Resource: "*"
-              
-  RootInstanceProfile: 
-    Type: "AWS::IAM::InstanceProfile"
-    Properties: 
-      Path: "/"
-      Roles: 
-        - 
-          Ref: "RootRole"
+Description: 'IAM Roles Template'
+Parameters:
+  ArnBase:
+    Type: String
+    Default: arn:aws:iam::aws:policy/
+  AWSCloudFormationFullAccess:
+    Type: String
+    Default: AWSCloudFormationFullAccess
+  AmazonEC2FullAccess:
+    Type: String
+    Default: AmazonEC2FullAccess    
   
-  #============================================================================================================
+Resources:
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole          
+      Policies:
+        -
+          #PolicyName: CloudFormationFullAccess
+          #PolicyDocument:
+            #Version: "2012-10-17"
+            #Statement:
+             # -
+                #Effect: "Allow"
+                #Action: "cloudformation:*"
+                #Resource: "*"    
+          PolicyName: EC2FullAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action: "ec2:*"
+                Resource: "*"    
+
+ #============================================================================================================
   #Create VPC
   VPC:
     Type: AWS::EC2::VPC
